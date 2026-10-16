@@ -40,7 +40,8 @@ if [[ "${1:-}" != --no-build ]]; then
     set -- CODE_SIGN_STYLE=Manual "CODE_SIGN_IDENTITY=$CODE_SIGN_IDENTITY"
   fi
   xcodebuild -quiet -project "$root/KeyRemapper.xcodeproj" -scheme KeyRemapper \
-    -configuration Release -destination 'platform=macOS' -derivedDataPath "$build" "$@" build
+    -configuration Release -destination 'platform=macOS' -derivedDataPath "$build" \
+    -allowProvisioningUpdates "$@" build
 fi
 if [[ ! -d "$sourceApp" ]]; then
   echo "Error: no built app at $sourceApp. Run make install first." >&2

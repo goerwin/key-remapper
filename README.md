@@ -189,6 +189,7 @@ make icon                            # regenerates the app and menu bar icons fr
 - Use `$HOME` instead of `~` in `CONFIG`, zsh doesn't expand it there
 - `make install` (or `Scripts/install.sh`) uses your Xcode signing identity, waits for the app and daemon to quit, and safely replaces `/Applications/KeyRemapper.app`. It asks for admin access only if needed. `Scripts/install.sh --no-build` reuses the last install build.
 - To select a specific certificate, run `make install CODE_SIGN_IDENTITY="<certificate name or SHA-1>"`. This uses manual signing for both the app and daemon.
+- Sign in to your Apple account in **Xcode > Settings > Accounts** before installing. The installer lets Xcode refresh signing certificates and provisioning profiles when needed.
 - `make test-app` replaces the installed app and needs _Accessibility_ for the terminal app. It briefly saves an invalid config to check reloading, and restores yours after. Physical keystrokes can't be automated (it would need a virtual HID driver), so try a few keys after it
 - `make dev-app` launches `build/dev-app/Build/Products/Debug/KeyRemapper.app` without replacing the installed app or running tests. It uses your existing config and signing identity.
 - `make dev` needs no app, helper or signing. Quit KeyRemapper first and grant _Input Monitoring_ and _Accessibility_ to the terminal app. Stop it with Ctrl+C
