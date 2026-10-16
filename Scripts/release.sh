@@ -6,7 +6,7 @@ set -euo pipefail
 # will go in it and, after confirmation, pushes an annotated tag whose message is the release notes.
 # Pushing the tag triggers .github/workflows/release.yml, which builds the app and publishes it.
 #
-# Usage: scripts/release.sh patch|minor|major
+# Usage: Scripts/release.sh patch|minor|major
 #
 
 bump=${1:-}

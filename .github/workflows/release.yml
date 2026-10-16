@@ -5,7 +5,7 @@ on:
   # builds without releasing, to check the signing secrets
   workflow_dispatch:
 
-# scripts/release.sh pushes the tag right after its commit is pushed to main. This run tests that
+# Scripts/release.sh pushes the tag right after its commit is pushed to main. This run tests that
 # commit too, so it cancels the one of ci.yml instead of running two macOS runners
 concurrency:
   group: mac-${{ github.sha }}
@@ -83,7 +83,7 @@ jobs:
             sleep 5
           done
 
-          # scripts/release.sh writes the notes in the annotated tag message
+          # Scripts/release.sh writes the notes in the annotated tag message
           if [[ "$GITHUB_REF" == refs/tags/* ]]; then
             git fetch --force origin "refs/tags/$GITHUB_REF_NAME:refs/tags/$GITHUB_REF_NAME"
             git tag -l --format='%(contents:body)' "$GITHUB_REF_NAME" > "dist/release/$name.md"

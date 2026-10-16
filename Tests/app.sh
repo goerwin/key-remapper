@@ -7,8 +7,6 @@ set -euo pipefail
 # Usage: Tests/app.sh [--no-build]
 #
 
-app=/Applications/KeyRemapper.app
-build=/tmp/keyremapper-test-app
 process='application process "KeyRemapper"'
 menu="menu 1 of menu bar item 1 of menu bar 2 of $process"
 alerts="every window of $process whose subrole is \"AXDialog\""
@@ -31,7 +29,6 @@ clickMenu() {
 daemonPid() { pgrep -f 'MacOS/KeyRemapperDaemon' || true; }
 daemonIs() { [[ "$(daemonPid)" == "$1" ]]; }
 daemonRuns() { [[ -n "$(daemonPid)" ]]; }
-daemonStopped() { [[ -z "$(daemonPid)" ]]; }
 hasWindow() { ui "exists window \"$1\" of $process" | grep -q true; }
 hasNoWindow() { ! hasWindow "$1"; }
 # Alerts have no title, so they're counted
@@ -59,19 +56,9 @@ waitFor() {
   return 1
 }
 
-if [[ "${1:-}" != "--no-build" ]]; then
-  (cd "$(dirname "$0")/.." && xcodebuild -quiet -project KeyRemapper.xcodeproj -target KeyRemapper \
-    -configuration Release build SYMROOT="$build")
-fi
-
 frontApp=$(lsappinfo info -only bundleid "$(lsappinfo front)" | cut -d'"' -f4)
 
-# The daemon quits with the app, then launchd starts the new one for the new app
-pkill -x KeyRemapper || true
-waitFor daemonStopped || { echo "FAIL: the daemon didn't quit with the app"; exit 1; }
-rm -rf "$app"
-ditto "$build/Release/KeyRemapper.app" "$app"
-open "$app"
+"$(dirname "$0")/../Scripts/install.sh" "$@"
 
 check "starts the daemon" waitFor daemonRuns
 pid=$(daemonPid)

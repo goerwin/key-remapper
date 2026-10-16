@@ -8,7 +8,7 @@ MENUBAR_IMAGESET := KeyRemapper/Assets.xcassets/MenuBarIcon.imageset
 
 FRAMEWORKS := -framework AppKit -framework IOKit -framework ApplicationServices
 
-.PHONY: test test-runtime test-app test-config build dev-app dev-build dev icon release-patch release-minor release-major
+.PHONY: test test-runtime test-app test-config build install dev-app dev-build dev icon release-patch release-minor release-major
 
 test:
 	g++ -o Tests/output -std=c++17 Tests/index.cpp && ./Tests/output
@@ -25,8 +25,11 @@ test-config:
 build:
 	xcodebuild -quiet -project KeyRemapper.xcodeproj -target KeyRemapper -configuration Debug CODE_SIGNING_ALLOWED=NO build
 
+install:
+	Scripts/install.sh
+
 dev-app:
-	scripts/dev-app.sh
+	Scripts/dev-app.sh
 
 dev-build:
 	mkdir -p build && clang++ -std=c++17 -fobjc-arc -o build/keyremapper-dev Dev/main.mm $(FRAMEWORKS)
@@ -40,4 +43,4 @@ icon:
 	cp $(MENUBAR_ICON_SVG) $(MENUBAR_IMAGESET)/icon.svg
 
 release-patch release-minor release-major:
-	scripts/release.sh $(@:release-%=%)
+	Scripts/release.sh $(@:release-%=%)

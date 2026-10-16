@@ -180,12 +180,15 @@ make test-runtime                    # Mac runtime tests: key events in, posted 
 make test-app                        # builds, installs and drives the signed app's menu (Tests/app.sh)
 make test-config [CONFIG=...]        # tests of each profile (default ~/KeyRemapperMac/config.json)
 make build                           # unsigned Debug build of the Mac app
+make install                         # builds, installs in /Applications, and launches the signed Release app
 make dev-app                         # quits the app, builds and runs a local signed Debug app
 make dev [CONFIG=... PROFILE=1 LOG=1] # run the remapper from the terminal
 make icon                            # regenerates the app and menu bar icons from images/*.svg
 ```
 
 - Use `$HOME` instead of `~` in `CONFIG`, zsh doesn't expand it there
+- `make install` (or `Scripts/install.sh`) uses your Xcode signing identity, waits for the app and daemon to quit, and safely replaces `/Applications/KeyRemapper.app`. It asks for admin access only if needed. `Scripts/install.sh --no-build` reuses the last install build.
+- To select a specific certificate, run `make install CODE_SIGN_IDENTITY="<certificate name or SHA-1>"`. This uses manual signing for both the app and daemon.
 - `make test-app` replaces the installed app and needs _Accessibility_ for the terminal app. It briefly saves an invalid config to check reloading, and restores yours after. Physical keystrokes can't be automated (it would need a virtual HID driver), so try a few keys after it
 - `make dev-app` launches `build/dev-app/Build/Products/Debug/KeyRemapper.app` without replacing the installed app or running tests. It uses your existing config and signing identity.
 - `make dev` needs no app, helper or signing. Quit KeyRemapper first and grant _Input Monitoring_ and _Accessibility_ to the terminal app. Stop it with Ctrl+C
