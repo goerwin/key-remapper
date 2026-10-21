@@ -26,7 +26,7 @@ if [[ "${1:-}" != --no-build ]]; then
   "${buildCommand[@]}" build
 fi
 
-source "${DOTFILES_DIR:-$HOME/Projects/dotfiles}/scripts/install-mac-lib.zsh"
+source "${DOTFILES_DIR:-$HOME/Projects/dotfiles}/lib/install-mac.zsh"
 MAC_APP_NAME="KeyRemapper"
 MAC_SOURCE_APP="$sourceApp"
 MAC_QUIT_PATTERNS='(^|/)KeyRemapperDaemon$'
